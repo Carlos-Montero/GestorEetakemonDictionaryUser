@@ -10,7 +10,7 @@ public class UserController {
 
     private Map<String,User> usermap = new HashMap<String,User>();
 
-    public String hashCompute(String toHash){
+    public String hashCompute(String toHash){   //obtain the password's hush
 
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -23,7 +23,7 @@ public class UserController {
         }
     }
 
-    public boolean registerUser (User user){
+    public boolean registerUser (User user){   //register user
         user.setPasswordHash(hashCompute(user.getPasswordHash()));
         User res = this.usermap.putIfAbsent(user.getUsername(),user);
         if (res == null) {
@@ -36,7 +36,7 @@ public class UserController {
 
     }
 
-    public boolean logInUser (String username, String password){
+    public boolean logInUser (String username, String password){    //login user
         User u = usermap.get(username);
         if (u!=null){
             if (u.getPasswordHash().equals(hashCompute(password))){

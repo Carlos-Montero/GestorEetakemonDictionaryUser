@@ -67,7 +67,7 @@ public class Controller {
 
     }
 
-    public List<Eetakemon> findEtakemonContain(String name){  //return eetakemon list with a certain key word
+    public List<Eetakemon> findEetakemonContain(String name){  //return eetakemon list with a certain key word
         List<Eetakemon>resultlist = new ArrayList<Eetakemon>();
         for (String key: eetakemonmap.keySet()){
             Eetakemon e = eetakemonmap.get(key);
