@@ -1,4 +1,8 @@
 import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Carlos on 22/02/2017.
@@ -6,11 +10,10 @@ import java.util.*;
 public class Controller {
 
 
-    private Map<String,Eetakemon> eetakemonmap = new HashMap<String,Eetakemon>();  //NUEVO
+    private Map<String,Eetakemon> eetakemonmap = new HashMap<String,Eetakemon>();
     private int currentID;
 
-
-    public Eetakemon getEetakemonById (int id) {  //HECHO NUEVO
+    public Eetakemon getEetakemonById (int id) {  //get Eetakemon by ID
         for (String key : eetakemonmap.keySet()) {
             Eetakemon e = eetakemonmap.get(key);
             if (e.getId() == id) {
@@ -20,11 +23,11 @@ public class Controller {
         return null;
     }
 
-    public int counter (){     //obtain current ID counter  HECHO NUEVO
+    public int counter (){     //obtain current ID counter
         return currentID;
     }
 
-    public boolean addEetakemon (Eetakemon e){  //add Eetakemon  HECHO NUEVO
+    public boolean addEetakemon (Eetakemon e){  //add Eetakemon
         Eetakemon res = this.eetakemonmap.putIfAbsent(e.getName(),e);
         if (res==null){
             currentID++;
@@ -36,12 +39,10 @@ public class Controller {
 
     }
 
-
-
-    public boolean deleteEetakemonByID(int id){ //delete Eetakemon by ID HECHO NUEVO
+    public boolean deleteEetakemonByID(int id){ //delete Eetakemon by ID
        Eetakemon found =this.getEetakemonById(id);
-       Eetakemon e = eetakemonmap.remove(found.getName());
-       if (e !=null){
+       if (found != null){
+           eetakemonmap.remove(found.getName());
            return true;
         }
         else {
@@ -50,11 +51,11 @@ public class Controller {
 
     }
 
-    public Map<String,Eetakemon> showAll(){  //return current Eetakemon list   HECHO NUEVO
-        return eetakemonmap;
+    public Map<String,Eetakemon> showAll(){  //return current Eetakemon list
+        return this.eetakemonmap;
     }
 
-    public Eetakemon findEetakemon(String name){  //obtain all Eetakemon with this name  HECHO NUEVO
+    public Eetakemon findEetakemon(String name){  //obtain all Eetakemon with this name
 
         Eetakemon e = eetakemonmap.get(name);
         if (e != null){
@@ -64,6 +65,17 @@ public class Controller {
             return null;
         }
 
+    }
+
+    public List<Eetakemon> findEtakemonContain(String name){  //return eetakemon list with a certain key word
+        List<Eetakemon>resultlist = new ArrayList<Eetakemon>();
+        for (String key: eetakemonmap.keySet()){
+            Eetakemon e = eetakemonmap.get(key);
+            if(e.getName().contains(name)){
+                resultlist.add(e);
+            }
+        }
+        return resultlist;
     }
 }
 

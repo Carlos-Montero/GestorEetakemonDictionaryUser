@@ -14,22 +14,11 @@ public class User {
     public User (String username, String mail, String passwordhash){
         this.username = username;
         this.mail = mail;
-
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(passwordhash.getBytes());
-            byte[] digest = md.digest();
-            this.passwordhash = String.format("%064x", new java.math.BigInteger(1, digest)).toUpperCase();
-            }
-        catch (NoSuchAlgorithmException ex){
-            this.passwordhash = null;
-        }
-
-
+        this.passwordhash = passwordhash;
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public void setName(String username) {
@@ -37,7 +26,7 @@ public class User {
     }
 
     public String getMail() {
-        return mail;
+        return this.mail;
     }
 
     public void setMail(String mail) {
@@ -45,10 +34,11 @@ public class User {
     }
 
     public String getPasswordHash() {
-        return passwordhash;
+        return this.passwordhash;
     }
 
     public void setPasswordHash(String passwordhash) {
+
         this.passwordhash = passwordhash;
     }
 }
