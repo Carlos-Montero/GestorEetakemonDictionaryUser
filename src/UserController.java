@@ -54,4 +54,28 @@ public class UserController {
     public Map<String, User> getMap(){
         return this.usermap;
     }
+
+    public boolean removeUser (String username) {  //delete user by name
+
+        User u =this.usermap.remove(username);
+        if (u == null) {
+            return false;
+        }
+        else{
+            return true;
+        }
+
+    }
+
+    public User findingUser(String username){  //obtain the user with this username
+
+        User u = usermap.get(username);
+        if (u != null){
+            return u;
+        }
+        else {
+            return null;
+        }
+
+    }
 }

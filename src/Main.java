@@ -29,7 +29,11 @@ public class Main {
                     break;
                 case 8: listUsers(userController);
                     break;
-                case 9: System.exit(0);
+                case 9: deleteUser(userController);
+                    break;
+                case 10: findUser(userController);
+                    break;
+                case 11: System.exit(0);
                     break;
                 default:
                     System.out.println("Incorrect option, try again");
@@ -49,8 +53,10 @@ public class Main {
         System.out.println("6.Register User");
         System.out.println("7.Log In");
         System.out.println("8.List all Users");
+        System.out.println("9.Delete user");
+        System.out.println("10.Find user");
         System.out.println("********************************************");
-        System.out.println("9.Exit");
+        System.out.println("11.Exit");
         System.out.print("Enter your choice: ");
 
         try {
@@ -213,8 +219,8 @@ public class Main {
         }
     }
 
-    public static void listUsers(UserController pUserController) {
-        Map<String, User> printmap = pUserController.getMap();
+    public static void listUsers(UserController userController) {
+        Map<String, User> printmap = userController.getMap();
         if(printmap.size() == 0) {
             System.out.println("Empty List");
         }
@@ -223,6 +229,44 @@ public class Main {
                 User u = printmap.get(key);
                 System.out.println("Username: " + u.getUsername() + ", email: " + u.getMail() + ", HASH: " + u.getPasswordHash());
             }
+        }
+    }
+
+    public static void deleteUser(UserController userController){
+
+        try {
+            System.out.print("Enter username: ");
+            Scanner input = new Scanner(System.in);
+            String username = input.next();
+
+            boolean res = userController.removeUser(username);
+            System.out.println();
+
+            if (!res) {
+                System.out.println("User don't exists, try again");
+            } else {
+                System.out.println("User deleted correctly");
+            }
+        }
+        catch (InputMismatchException ex) {
+            System.out.println();
+            System.out.println("Please, enter the data in the correct format");
+        }
+
+
+    }
+
+    public static void findUser(UserController userController) {
+        System.out.print("Enter username to find: ");
+        Scanner input = new Scanner(System.in);
+        String name = input.next();
+        User res = userController.findingUser(name);
+        System.out.println();
+        if(res == null) {
+            System.out.println("No results found for this username");
+        }
+        else {
+            System.out.println("Name: " + res.getUsername() + ", Mail: " + res.getMail());
         }
     }
 
