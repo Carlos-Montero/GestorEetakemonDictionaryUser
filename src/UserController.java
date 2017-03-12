@@ -10,36 +10,24 @@ public class UserController {
 
     private Map<String,User> usermap = new HashMap<String,User>();
 
-    public String hashCompute(String toHash){   //obtain the password's hush
-
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(toHash.getBytes());
-            byte byteData[] = md.digest();
-            return String.format("%064x", new java.math.BigInteger(1, byteData)).toUpperCase();
-        }
-        catch (NoSuchAlgorithmException ex){
-            return null;
-        }
-    }
-
-    public boolean registerUser (User user){   //register user
-        user.setPasswordHash(hashCompute(user.getPasswordHash()));
-        User res = this.usermap.putIfAbsent(user.getUsername(),user);
+    public boolean registerUser(User pUser, String pPassword) {
+        byte[] salt = CryptoUtils.getInstance().generateSalt(32);
+        byte[] hash = CryptoUtils.getInstance().hashCompute(pPassword, salt);
+        User newUser = new User(pUser.getUsername(), pUser.getMail(), CryptoUtils.getInstance().bytesToBase64(hash), CryptoUtils.getInstance().bytesToBase64(salt));
+        User res = this.usermap.putIfAbsent(pUser.getUsername(), newUser);
         if (res == null) {
             return true;
+        } else {
+            return false;
         }
-            else{
-                return false;
-            }
-
-
     }
 
     public boolean logInUser (String username, String password){    //login user
         User u = usermap.get(username);
         if (u!=null){
-            if (u.getPasswordHash().equals(hashCompute(password))){
+            byte[] salt = CryptoUtils.getInstance().base64ToBytes(u.getPasswordSalt());
+            byte[] expectedHash = CryptoUtils.getInstance().hashCompute(password, salt);
+            if (u.getPasswordHash().equals(CryptoUtils.getInstance().bytesToBase64(expectedHash))){
                 return true;
             }
             else{

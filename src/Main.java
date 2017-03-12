@@ -8,6 +8,7 @@ public class Main {
     public static void main(String[] args) {
         Controller eetakemonController = new Controller();
         UserController userController = new UserController();
+        MaoContoller mapController = newMapController();
         for(;;) {
             System.out.println();
             int option = chooseOption();
@@ -33,7 +34,9 @@ public class Main {
                     break;
                 case 10: findUser(userController);
                     break;
-                case 11: System.exit(0);
+                case 11: mapController.generateList(Controller);
+                    break;
+                case 12: System.exit(0);
                     break;
                 default:
                     System.out.println("Incorrect option, try again");
@@ -56,7 +59,9 @@ public class Main {
         System.out.println("9.Delete user");
         System.out.println("10.Find user");
         System.out.println("********************************************");
-        System.out.println("11.Exit");
+        System.out.println("11.Generate location");
+        System.out.println("********************************************");
+        System.out.println("12.Exit");
         System.out.print("Enter your choice: ");
 
         try {
@@ -175,7 +180,7 @@ public class Main {
             String passwordconfirmation = input.next();
             if(password.equals(passwordconfirmation)) {
                 User u = new User(username, email, password);
-                boolean res = userController.registerUser(u);
+                boolean res = userController.registerUser(u,password);
                 System.out.println();
 
                 if (!res) {
@@ -210,7 +215,7 @@ public class Main {
                 System.out.println("Username or password not correct, try again");
             } else {
                 User u = userController.getMap().get(username);
-                System.out.println("User logged correctly (Username: " + username + ", email: " + u.getMail() + ", password: " + password + ", HASH: " + u.getPasswordHash() + ")");
+                System.out.println("User logged correctly (Username: " + username + ", email: " + u.getMail() + ", password: " + password);
             }
         }
         catch (InputMismatchException ex) {
@@ -227,7 +232,7 @@ public class Main {
         else {
             for (String key: printmap.keySet()){
                 User u = printmap.get(key);
-                System.out.println("Username: " + u.getUsername() + ", email: " + u.getMail() + ", HASH: " + u.getPasswordHash());
+                System.out.println("Username: " + u.getUsername() + ", email: " + u.getMail() + ", HASH: " + u.getPasswordHash() + ",SALT" + u.getPasswordSalt());
             }
         }
     }

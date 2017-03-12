@@ -8,13 +8,15 @@ public class User {
     private String username;
     private String mail;
     private String passwordhash;
+    private String passwordSalt;
 
-    public User(){}
+    public User(String username, String email, String password){}
 
-    public User (String username, String mail, String passwordhash){
+    public User (String username, String mail, String passwordhash, String salt){
         this.username = username;
         this.mail = mail;
         this.passwordhash = passwordhash;
+        this.passwordSalt = salt;
     }
 
     public String getUsername() {
@@ -40,5 +42,9 @@ public class User {
     public void setPasswordHash(String passwordhash) {
 
         this.passwordhash = passwordhash;
+    }
+
+    public String getPasswordSalt(){
+        return this.passwordSalt;
     }
 }
